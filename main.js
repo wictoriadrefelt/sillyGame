@@ -12,12 +12,13 @@ const current1 = document.getElementById('current--1')
 
 const diceEl = document.querySelector('.dice')
 const rollDice = document.querySelector('.btn--roll')
-const newDice = document.querySelector('.btn--new')
+const newGame = document.querySelector('.btn--new')
 const holdDice = document.querySelector('.btn--hold')
 
 
 
 //start-up conditions
+
 score0.textContent = 0;
 score1.textContent = 0;
 current0.textContent = 0; 
@@ -28,6 +29,9 @@ diceEl.classList.add('hidden')
 let scores = [0, 0]
 let currentScore = 0;
 let activePlayer = 0; 
+let playing = true; 
+
+
 
 const switchPlayer = function () {
     document.getElementById(`current--${activePlayer}`).textContent = 0;
@@ -39,6 +43,7 @@ const switchPlayer = function () {
 }
 
 rollDice.addEventListener('click', function(){
+    if(playing){
     const dice = Math.trunc(Math.random() * 6) +1;
     diceEl.classList.remove('hidden');
     diceEl.src = `dice-${dice}.png`;
@@ -53,16 +58,47 @@ rollDice.addEventListener('click', function(){
         switchPlayer();
         
     }
-
+    }
 });
 
+
 holdDice.addEventListener('click', function(){
+    if(playing){
     scores[activePlayer] += currentScore; 
     document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer]
     console.log(scores[activePlayer])
+    
+    if(scores[activePlayer] >= 10){
+        playing = false; 
+        diceEl.classList.remove('hidden')
+        document.querySelector(`.player--${activePlayer}`).classList.add('player--winner')
+        document.querySelector(`.player--${activePlayer}`).classList.remove('player--active')
+}else{
     switchPlayer();
-})
+}
+}})
 
+
+newGame.addEventListener('click', function(){
+    playing = true;
+    if(playing){
+        score0.textContent = 0;
+    score1.textContent = 0;
+    current0.textContent = 0; 
+    current1.textContent = 0; 
+
+    diceEl.classList.add('hidden')
+    scores = [0, 0]
+    activePlayer = 0;
+    player0.classList.toggle('player--winner')
+        player1.classList.toggle('player--winner')
+    //document.querySelector(`.player--${activePlayer}`).classList.remove('player--winner')
+    currentScore = 0;
+
+
+    }
+
+})
 
 
 
