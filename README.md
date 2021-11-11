@@ -1,0 +1,2 @@
+# sillyGame
+Game of dice
